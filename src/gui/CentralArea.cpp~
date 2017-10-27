@@ -1,0 +1,109 @@
+/*
+The file CentralArea.cpp is part of the WildlifeCounter software.
+
+WildlifeCounter is a software that provides tools for automatic detection of wildlife in series of images.
+
+Copyright 2014-2015 WIPSEA, contact@wipsea.com
+
+Author(s) : Romain Dambreville
+
+Creation date : 2015/03/26
+
+Tous droits réservés - All rights reserved
+
+Library used :
+- Qt : commercial license => http://doc.qt.io/qt-5/commerciallicense.html
+- OpenCV : BSD 3-Clause license => http://opensource.org/licenses/BSD-3-Clause
+*/
+
+#include <cstdlib>
+#include <ctime>
+#include <string>
+#include "CentralArea.hpp"
+#include "SoftWindow.hpp"
+#include "ImgZoom.hpp"
+#include "tools.hpp"
+#include "easylogging++.h"
+
+CentralArea::CentralArea(SoftWindow *parent) {
+	CLOG(TRACE, "gui_ca") << "Process : initializing central area";
+  this->setMinimumSize(QSize(200, 200));
+  m_parent = parent;
+  //  Define widgets
+  m_flecheGaucheButton = new QPushButton;
+  m_flecheGaucheButton->setIcon(QIcon(parent->getIconPath()
+                                      + "previous.png"));
+  m_flecheGaucheButton->setMinimumSize(QSize(this->width()*0.05,
+                                             this->width()*0.05));
+  m_flecheGaucheButton->setIconSize(QSize(this->width()*0.04,
+                                          this->width()*0.04));
+  connect(m_flecheGaucheButton, SIGNAL(clicked()),
+          parent, SLOT(decrementMainImage()));
+
+  m_flecheDroiteButton = new QPushButton;
+  m_flecheDroiteButton->setIcon(QIcon(parent->getIconPath() + "next.png"));
+  m_flecheDroiteButton->setIconSize(QSize(this->width()*0.04,
+                                          this->width()*0.04));
+  m_flecheDroiteButton->setMinimumSize(QSize(this->width()*0.05,
+                                             this->width()*0.05));
+  m_flecheDroiteButton->setIconSize(QSize(this->width()*0.04,
+                                          this->width()*0.04));
+  connect(m_flecheDroiteButton, SIGNAL(clicked()),
+          parent, SLOT(incrementMainImage()));
+
+  // image is framed in m_imageFrame
+  m_imageFrame = new QFrame;
+  QHBoxLayout *testLayout = new QHBoxLayout;
+  m_imageFrame->setFixedSize(QSize(this->width()*0.85,
+                                   this->height()*0.9));
+  m_imageCentral = new ImgZoom(parent);
+  
+  std::srand(std::time(0));
+  int randomValue = rand();
+  int index = randomValue%(m_parent->m_mission->getObsNumber());
+
+  m_parent->setIter(index);
+  std::string imageName =
+      m_parent->m_mission->getObs(index).lock()->getFilePath();
+  
+  m_imageCentral->setImage(m_parent->m_mission->getObs(index).lock(), this);
+  testLayout->addWidget(m_imageCentral);
+  testLayout->setAlignment(Qt::AlignCenter);
+  testLayout->setMargin(0);
+  m_imageFrame->setLayout(testLayout);
+  m_imageFrame->setFrameShape(QFrame::Box);
+  m_imageFrame->setFrameShadow(QFrame::Plain);
+
+  // Define layout
+  QHBoxLayout *centralLayout = new QHBoxLayout;
+  centralLayout->addWidget(m_flecheGaucheButton, Qt::AlignLeft);
+  centralLayout->addWidget(m_imageFrame, Qt::AlignCenter);
+  centralLayout->addWidget(m_flecheDroiteButton, Qt::AlignRight);
+  centralLayout->setAlignment(Qt::AlignCenter);
+  centralLayout->setSpacing(0);
+
+  // Apply layout
+  this->setLayout(centralLayout);
+  CLOG(TRACE, "gui_ca") << "Status : central area initialized";
+}
+
+void CentralArea::resizeEvent(QResizeEvent* event) {
+	CLOG(TRACE, "gui_ca") << "Process : resize central area";
+  QFrame::resizeEvent(event);
+  this->m_flecheDroiteButton->setFixedSize(QSize(this->width()*0.05,
+                                                 this->width()*0.05));
+  this->m_flecheGaucheButton->setFixedSize(QSize(this->width()*0.05,
+                                                 this->width()*0.05));
+  this->m_imageFrame->setFixedSize(QSize(0.85*this->width(),
+                                         this->height()*0.9));
+  std::shared_ptr<Observation> currentObs;
+  if (m_parent->m_iter != -1) {
+    currentObs = m_parent->m_currentFolder->getObs(m_parent->m_iter).lock();
+  } else {
+    currentObs = std::shared_ptr<Observation>(
+        new Observation(cs(m_parent->getIconPath() + "turtle2.JPG")));
+  }
+  
+  this-> m_imageCentral->setImage(currentObs, this);
+  // update();
+}

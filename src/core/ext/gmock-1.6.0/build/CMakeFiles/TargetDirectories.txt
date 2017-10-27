@@ -1,0 +1,4 @@
+/home/romain/code/gmock-1.6.0/build/CMakeFiles/gmock.dir
+/home/romain/code/gmock-1.6.0/build/CMakeFiles/gmock_main.dir
+/home/romain/code/gmock-1.6.0/build/gtest/CMakeFiles/gtest.dir
+/home/romain/code/gmock-1.6.0/build/gtest/CMakeFiles/gtest_main.dir

@@ -1,0 +1,37 @@
+# ---[ gui
+file(GLOB_RECURSE gui_srcs ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+set(Harmony_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/gui)
+
+add_executable(Harmony ${gui_srcs})
+include_directories(core SYSTEM ${PROJECT_SOURCE_DIR}/include/log)
+target_include_directories(Harmony ${Wipro_INCLUDE_DIRS} PUBLIC
+  $<BUILD_INTERFACE:${Harmony_INCLUDE_DIR}>
+  $<INSTALL_INTERFACE:include>)
+#qt5_use_modules(Harmony Widgets)
+#add_definitions(${Qt5Widgets_DEFINITIONS})
+#target_include_directories(Harmony ${Qt5Widgets_INCLUDES})
+target_link_libraries(Harmony core)
+target_link_libraries(Harmony Qt5::Widgets)
+
+#target_link_libraries(Harmony Widgets_LIBRARIES})
+target_link_libraries(Harmony PUBLIC ${easyLogging})
+if(USE_SERVER)
+  target_link_libraries(Harmony serverLib)
+endif()
+
+# # ---[ Install
+# install (TARGETS Harmony DESTINATION bin)
+# install (FILES "${PROJECT_BINARY_DIR}/HarmonyConfig.h"        
+#          DESTINATION include)
+# install(DIRECTORY "${PROJECT_SOURCE_DIR}/doc/" DESTINATION "doc")
+# install(DIRECTORY "${PROJECT_SOURCE_DIR}/html/" DESTINATION "html")
+# install(DIRECTORY "${PROJECT_SOURCE_DIR}/images/" DESTINATION "images")
+
+# # build a CPack driven installer package
+# include (InstallRequiredSystemLibraries)
+# set (CPACK_RESOURCE_FILE_LICENSE  
+#      "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
+# set (CPACK_PACKAGE_VERSION_MAJOR "${Harmony_VERSION_MAJOR}")
+# set (CPACK_PACKAGE_VERSION_MINOR "${Harmony_VERSION_MINOR}")
+# set (CPACK_PACKAGE_VERSION_PATCH "${Harmony_VERSION_PATCH}")
+# include (CPack)

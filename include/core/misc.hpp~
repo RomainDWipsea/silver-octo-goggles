@@ -1,0 +1,62 @@
+/*
+The file algo.hpp is part of the WildlifeCounter software.
+
+WildlifeCounter is a software that provides tools for automatic detection of wildlife in series of images.
+
+Copyright 2014-2015 WIPSEA, contact@wipsea.com
+
+Author(s) : Romain Dambreville
+
+Creation date : 2017/10/09
+
+Tous droits réservés - All rights reserved
+
+Library used :
+- OpenCV 3.0.0 : BSD 3-Clause license => http://opensource.org/licenses/BSD-3-Clause
+*/
+
+#ifndef MISC_H
+#define MISC_H
+
+#include <string>
+#include <vector>
+
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
+/*!
+ * \brief Checking function
+ *
+ * This function will try to find _test in _container and return true if it does find it
+ *
+ * \param _test : string to test
+ *        _container : table where you are looking in
+ *
+ * \return true if container contains _test, false otherwise
+ */
+bool isStringIn(std::string _test, const std::vector<std::string>& _container);
+
+/*!
+ * \brief convert
+ *
+ * convert a string to a double (from json files)
+ *
+ * \param 
+ *
+ * \return 
+ */
+double my_stod(const std::string &valueAsString);
+
+/*!
+ * \brief check format
+ *
+ * Check a path format to compare vs acceptable image format (JPG, PNG, TIF, BMP, GIF)
+ *
+ * \param _path : absolute or relative path to the file.
+ *
+ * \return bool : true if format belongs to the list.
+ */
+bool isImage(std::string _path);
+
+#endif /* MISC_H */

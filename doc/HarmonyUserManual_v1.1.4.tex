@@ -1,0 +1,389 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage{cite}
+\usepackage{verbatim}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{wipseaBlue}{HTML}{014B6A}
+
+\usepackage[margin=0.7in]{geometry}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        \Huge
+        \textbf{\textcolor{wipseaBlue}{Harmony Software}\\}
+        \vspace{0.5cm}
+        \LARGE
+        Version 1.1.4\\
+        \vspace{1.5cm}
+        \textbf{\textcolor{wipseaBlue}{User Manual}}
+        \vfill
+        \textit{Written by : } \\
+        Romain Dambreville\\
+        \& \\Gwenael Duclos \\
+        \vspace{0.8cm}
+        \begin{figure}[!htb]
+          \centering
+            \includegraphics[width=0.5\linewidth]{../images/logo.png}
+        \end{figure}
+        \Large
+        WIPSEA\\
+        France\\
+    \end{center}
+\end{titlepage}
+
+%\maketitle
+\tableofcontents
+\newpage
+
+\section{Software versions history}
+\begin{table}[h]
+\centering
+  \caption{Software versions history}
+  \label{tab:versionHistory}
+  \begin{tabularx}{\textwidth}{|Y|| Y | Y||} 
+    \hline
+   \textbf{Version} & \textbf{Description} & \textbf{Date} \\
+    \hline
+    0.1.0 & Demo& 2016-10-21 \\
+    \hline
+    0.1.1 & Ecolotech& 2016-11-2 \\
+    \hline
+    1.0.0 & AAMP Specific delivery & 2016-11-14 \\
+    \hline
+    1.0.1 & AAMP Specific delivery user manual update & 2016-11-18 \\
+    \hline
+    1.1.0 & AAMP Specific delivery including wps communication & 2016-12-06 \\
+    \hline
+    1.1.1 & AAMP Specific delivery user manual update & 2016-12-12\\
+    \hline
+    1.1.2 & AAMP Specific delivery, bug corrections & 2016-12-14\\
+    \hline
+    1.1.3 & AAMP Specific delivery, bug corrections & 2017-03-29\\
+    \hline
+    1.1.4 & AAMP Specific delivery, bug corrections & 2017-04-? \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\section{Aim of the document}
+This document aims at presenting WIPSEA Harmony software to the user. It will cover the following items : 
+\begin{itemize}
+  \item Main functionalities
+  \item Interfaces
+  \item Known errors
+\end{itemize}
+
+\section{Software presentation}
+Harmony is an image analysis software aiming to make image based wildlife counting easier. Harmony deals with projects composed of one or multiple folders containing images. At the moment the software accepts the following image formats : 
+\begin{itemize}
+  \item JPG
+  \item BMP
+  \item TIF
+  \item GIF
+  \item PNG
+\end{itemize}
+
+\newpage
+
+\subsection{Starting a new project}
+Welcome as a user of Harmony software. Figure \ref{fig:startUp} is illustating the software starting interface.
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = \linewidth]{../images/start.png}
+  \caption{\label{fig:startUp} Harmony starting interface }
+\end{figure}
+
+To start a new project, you just have to click on \emph{New Project} button (figure \ref{fig:NewProjectButton}) in the "Actions" toolbar or select "New Project" command in "File" menu.
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.06\linewidth]{../images/edit.png}
+  \caption{\label{fig:NewProjectButton} New Project button }
+\end{figure}
+
+A window invites you to select the project root folder, i.e. the directory where your images are stored on your drive. You have to choose a directory, not an image. If you have several subfolders in a main directory, you have to choose the main directory.
+
+Then you are invited to enter the project name. This name will be used as the filename by the automatic saving functionnality.
+
+You are now ready to work on your project. 
+\newpage
+
+\subsection{Working on a project}
+While in a project, the interface changed to show you the working interface with three new areas: "Project information", "Image path" and "File system" (see Figure \ref{fig:workingInt}).
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\linewidth]{../images/workingLeg.png}
+  \caption{\label{fig:workingInt} Working interface}
+\end{figure}
+
+\begin{table}[!h]
+  \centering
+  \caption{\label{tab:workingInt} Areas}
+  \begin{tabularx}{\textwidth}{l l Y }
+    \hline
+    \textbf{1} & Project information & Provides you, for each object class, the counts of objects detected in the current image, in the current folder and in the whole project. \\
+    \hline
+    \textbf{2} & Image path & Show you the full path of the current image. You can modify this path to access another image of the current folder. \\
+    \hline
+    \textbf{3} & File system & All the files accessible in the project are visible here starting at the project root folder given when creating the project. Folders can be clicked to change the current folder. Images can be clicked to change the current image. \\
+    \hline
+  \end{tabularx}
+\end{table}
+The left and right arrows are used to navigate in images of the current folder. To access images in other folders or subfolders, you have to go through the "File system" interface (area \textbf{3} of figure \ref{fig:workingInt}).
+\newpage
+
+\subsection{Dealing with objects}
+Harmony is based on objects to count. So the first thing you have to do when you start working on a project is to create a class for each object by using the \emph{Add object} button (figure \ref{fig:AddObject}) or selecting "Add object" command in "Edition" menu.  
+
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.06\linewidth]{../images/plus.png}
+  \caption{\label{fig:AddObject} Add an object to count }
+\end{figure}
+
+You are invited to give a name and select a representative color for this new object class. 
+
+Then, a new button is created in the "Actions" toolbar with the associated color and the given name of the new object class. You now just have to choose one object class button in the toolbar and click on the objet position on the current image to create a new detection. Each object detection is marked with a colored square and the object corresponding count is incremented in the "Project information" panel (see figure \ref{fig:ObjectDetection}). 
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\linewidth]{../images/detectSquare.png}
+  \caption{\label{fig:ObjectDetection} Object detection}
+\end{figure}
+
+For each detection, you can then adjust the square size by using the scroll button (middle mouse button) while having the mouse pointer on the detection. The last square size used will be remembered for future detections. 
+
+To remove a detection, a simple click on the detection square will do it, and decrement the object count for the concerned object. 
+
+You can also remove all the detections (from all object classes) of the current image by clicking the \emph{Clear observation} button (figure \ref{fig:ClearObservation}). 
+
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.06\linewidth]{../images/Clear_icon.png}
+  \caption{\label{fig:ClearObservation} Clear observation (remove all detections) }
+\end{figure}
+
+The name or the color of each object class can be modified at any time thanks to the \emph{Edit object} button (figure \ref{fig:EditObject}) or the "Edit object" commd in the "Edition" menu.
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.06\linewidth]{../images/editSpecies.png}
+  \caption{\label{fig:EditObject} Edit an object class }
+\end{figure}
+
+You can also remove an object class at any time thanks to the \emph{Remove object} button (figure \ref{fig:RemoveObject}) or the "Remove object" command in the "Edition" menu but you have to be aware of the fact that all the associated data will be lost if you confirm this deletion.
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.06\linewidth]{../images/moins.png}
+  \caption{\label{fig:RemoveObject} Remove an object class }
+\end{figure}
+
+\subsection{Zooming}
+We know that counting small animals on photos can be a difficult task so Harmony provides you with a magnifiying glass to help. You have just to press the right click on the main image to activate it. The zooming effect can be controled by scrolling while keeping the right click pressed. The zooming factor can be increased up to twice the original image resolution.
+
+\subsection{Saving results}
+The software automatically save any results in a file named after the project name as "myProject.json" in the project main folder. This file contains information about the position of all detections made by the user. However, Harmony does not save copies of the images for memory purposes. Hence, modifying the project folder could cause the software to crash when trying to load modified or erased images. If the folder remains the same, a project can be loaded back to it's last state as described in next chapter. Using the \emph{Save Project} button (figure \ref{fig:SaveProject}) or the "Save project" command of "File" menu will have the same effect as automatic saving, while using "Save project as" command in the "File" menu will save the results in a new file and select this file for future automatic savings.
+
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.06\linewidth]{../images/save.png}
+  \caption{\label{fig:SaveProject} Save project }
+\end{figure}
+
+This json file contains all the information required to design an automatic solution if sent to Wipsea along with the image folder. For more information on automatic detection solution and other image processing algorithm, go to \url{www.wipsea.com} or contact us at \href{mailto:contact@wipsea.com}{\nolinkurl{contact@wipsea.com}}.
+
+\subsection{Opening an existing project}
+If you want to open an existing project, you can click on \emph{Load} button (figure \ref{fig:LoadButton}) in the toolbar or select "Load" command in "File" menu. A window invites you to select the json file used to save your existing project.
+
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.06\linewidth]{../images/open.png} 
+  \caption{\label{fig:LoadButton} Load button }
+\end{figure}
+
+As Harmony use an automatic saving functionnality, you are asked to confirm that you want to overwrite the existing file because you could want keep this file as it is, for example in the case that a colleague gave you his file to review his work. If you answer "No", you will be invited to give a new name to the project.
+
+\subsection{Working interface personal setup}
+You can hide or show the different docks (file system, project information) by right clicking on it.
+
+\subsection{Compatibility}
+At the moment, Harmony is compatible with Windows (tested on Windows 8.1 and Windows 7). Further versions will include a MacOS and linux compatible executable.
+
+\section{Algorithmic library}
+\label{sec:algo}
+This version proposes an automatic solution to detect sea turtles. Once you have started or loaded a project possibly containing marine turtles, just run the algorithm by clicking on "Detect Turtle button" (figure \ref{fig:DetectTurtleButton}) in the toolbar or selecting "Detect Turtles" in "Tools" menu.
+
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.06\linewidth]{../images/turtle.png} 
+  \caption{\label{fig:DetectTurtleButton} Detect turtle button }
+\end{figure}
+
+This action will automatically create a "Turtle" object class and run the algorithm on all the images of your current folder. The algorithm is designed so that it "rates" all found object between 0 and 100 according to their similarity with the learned turtles. So each object is associated with a score that can be seen as a confidence score. The algorithm will surely save you quite some time, but you will have to validate the detections as the precision is not guaranteed. However, to help you in your validation task, you may use the "Threshold slider" located next to the "Turtle" class in the action tool bar. 
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.6\linewidth]{../images/threshold.png} 
+  \caption{\label{fig:threshold} Threshold slider}
+\end{figure}
+This slider will allow you to define a threshold. All detections with an associated score lower than the threshold will be hidden and won't count as "Turtles"; all the detections with associated score higher than the threshold will be visible and will increment the "Turtle" object counts. The threshold is image specific, you can choose a different threshold for each image if needed. A good practice is to play with the threshold until you think you almost detected all the wanted objects and then add  the missing ones and remove the wrong ones as you would do for any other object.
+Automatic detections are displayed with circles and manual ones are displayed with squares.
+
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.25\linewidth]{../images/GPU.PNG} 
+  \caption{\label{fig:gpu} GPU indicator}
+\end{figure}
+The GPU sign in the action toolbar (figure \ref{fig:gpu}) indicates the presence or absence of GPU. It is initially black and will be displayed in red if no GPU have been found, or in green, if an adapted GPU device has been detected when running the automatic detection. The GPU is only used to accelerate the algorithm, it has no impact on the final results. To be compatible, you need to have a GPU with compute capability higher than 2.0 (check \url{https://developer.nvidia.com/cuda-gpus}) and to make sure you have the latest driver version available (check \url{http://www.nvidia.fr/Download/index.aspx}).
+\\
+Sea turtles automatic detection is the first algorithm proposed by Wipsea. If you are interested in having one on your field of study to help you analyzing your photos, contact us at \href{mailto:contact@wipsea.com}{\nolinkurl{contact@wipsea.com}}.
+
+\section{WPS server}
+Harmony can communicate with other software or entity through a server/client like communication. The server we 
+implemented respects the Web Processing Service (WPS) protocol, which helps normalizing data exchanges. It was first designed to communicate with QGIS SemmaDrone plugin , but can be accessed through any web browser.
+
+To start the server, click on "Start server" (figure \ref{fig:startServer}) in the toolbar or select "Start Server" in "Tools" menu. The reverse operation "Stop server" will stop the connection between Harmony and QGIS, save the current state of the associated Harmony project, close the project and reinitialize Harmony. This action will reset the workspace as if you were creating a new project because Harmony will have to be ready to receive new information from the distant client.
+
+\begin{figure}[!h]
+  \centering
+% trim = {left lower right upper}
+  \includegraphics[width = 0.3\linewidth]{../images/startserver.PNG} 
+  \caption{\label{fig:startServer} Start server}
+\end{figure}
+
+  Harmony can receive 3 main WPS functions : 
+ \subsection{createProject:}
+ Input : 
+ \begin{itemize}
+ \item projectDirectory : absolute path to the main folder
+ \end{itemize}
+ Output : 
+ \begin{itemize}
+ \item idProject : unique project number. 
+ \end{itemize}
+ This function will update the project main folder path and will give a unique number to the project. The name given is currently a unique number generated by Harmony and given back to the client.
+ \subsection{detectTurtles:} 
+	Inputs :
+  \begin{itemize}
+    \item idProject :  unique project number (returned by createProject)
+    \item image : name of the image to treat
+    \item probaThreshold : threshold to set on the detections (cf \ref{sec:algo})
+  \end{itemize}
+
+	Outputs :
+	\begin{itemize}
+	 \item user : Name of the person in charge of the validation process 
+     \item turtles : list of all valid detections (above probaThreshold), for each detection, we provide :
+   	 	\begin{itemize}
+    		\item idDetection : Unique Id for the detection
+    		\item point1X : x position of the head/tail
+    		\item point1Y : y position of the head/tail
+    		\item point2X : x posistion of the tail/head 
+    		\item point2Y : y position of the tail/head
+    		\item CenterX : x position of the center
+    		\item CenterY : y postion of the center
+    		\item detectProba : detection confidence.
+    	\end{itemize}
+    \end{itemize}
+   
+
+ 
+
+ The detectTurtle function will first add an image to the project (if non already existant), and run the Turtle detection algorithm on it. When receiving the first image, Harmony will set the workspace to show it and will ask you your name. This information will be transmitted to the client as it can be an important information for long term projects. Then each time an image is received, the interface will be updated to take it into account. Since this operation is synchronized with the automatic detection and the WPS communication, it can take some time. A good practice is to wait for all images to be loaded before you start to work on the validation. For each detection, we return to the client 3 points (the center and both extremities of the turtle), a unique detection identification number and the associated score (detectProba). Once every image has been loaded, you can deal with the project as any other project, but don't close the server if you wish to retrieve your work from QGIS SemmaDrone plugin with the getDetections function. In the current version, the server must stay alive during all the process to stay synchronized with the client.
+ 
+ \subsection{getDetections}
+Inputs :
+  \begin{itemize}
+    \item idProject :  unique project number (returned by createProject)
+    \item image : name of the image to treat
+  \end{itemize}
+
+	Outputs :
+	\begin{itemize}
+	 \item user : Name of the person in charge of the validation process 
+     \item objects : list of all valid detections (above probaThreshold), for each detection, we provide :
+   	 	\begin{itemize}
+    		\item idDetection : Unique Id for the detection
+    		\item point1X : x position of the head/tail
+    		\item point1Y : y position of the head/tail
+    		\item point2X : x posistion of the tail/head
+    		\item point2Y : y position of the tail/head
+    		\item CenterX : x position of the center
+    		\item CenterY : y postion of the center
+    		\item detectProba : detection confidence.
+    		\item validated : true if the object was checked by a human expert.	
+    	\end{itemize}
+    \end{itemize}
+
+After the automatic detection process, you may need to correct some detections, modify the "Turtle threshold" or add new objects. getDetections allows you to retreive these changes from the client.
+ \subsection{Step by step example}
+ The following section describes how to use the WPS server service step by step. 
+ 
+ \begin{table}[h]
+  \centering
+  \caption{Step by step procedure}
+  \label{tab:wpsSteps}
+  \begin{tabularx}{\textwidth}{|p{2cm}| Y|} 
+    \hline
+   \textbf{Step} & \textbf{Description}\\
+    \hline
+  	1 & Open Harmony \\
+  	\hline
+  	2 & Press the "Start Server", wait and press OK when the success message appears. \\
+  	\hline
+  	3 & Open QGIS (make sure you have the last version of SemmaDrone module e.g v1.3.4 or newer).\\
+  	\hline
+  	4 & Follow the SemmaDrone documentation to start or load a project until you reach the detection phase.\\
+  	\hline
+  	5 & In the SemmaDrone "Detection" window, choose "wipsea Detect Turtles" in the Algorithms/Types section.\\
+  	\hline 
+  	6 & In the SemmaDrone "Detection" window, set the other parameters to your preferences (Probability threshold, Duplicate object speed.\\
+  	\hline
+  	7 &  In the SemmaDrone "Detection" window, select Apply and then OK.\\
+  	\hline
+  	8 & Wait for Harmony to receive the first image. Harmony will ask for your name that will be synchronized with QGIS later as a reference for the validation process.\\
+  	\hline 
+  	9 & Harmony automatically uses the turtle detection algorithm on each new image to provide results for QGIS at the same time. You can check the loading progress by looking at the progress bar in QGIS/SemmaDrone. \\
+  	\hline
+  	10 & You can validate (add/remove/edit) the proposed detections on the images as they are displayed by Harmony. Your modifications will be saved by Harmony but they will be synchronized with QGIS plugin at the next step. \\
+  	\hline
+  	11 & Once you have validated all the images, you can synchronize your results with SemmaDrone by choosing "wipsea Harmony Get Detections" in the Algorithms/Type section (QGIS/SemmaDrone).\\
+  	\hline
+  	12 & To finish your task, you can either press the "Stop server" button or close Harmony. Your work will be saved as a Harmony specific json file in your QGIS working directory named using a unique code as filename.\\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\newpage
+\section{Known errors}
+\subsection{Zoom problem}
+If you remove a detection while zooming, the magnifying glass will freeze until you right click elsewhere on the image. This bug has been reported and will be adressed in future releases.
+
+\subsection{Stop server bug}
+It has been reported that Harmony can crash when pressing the "Stop server" button. However, we couldn't reproduce this bug. Any information about this issue would be welcome if you experience it.
+
+
+\subsection{Help us improve!}
+\label{subsec:newBug}
+If you find any problem when using this software, please let us know by sending an e-mail to \href{mailto:support@wipsea.com}{\nolinkurl{support@wipsea.com}} with explanations on how you (re)produced the occurence of the problem. 
+
+\end{document}

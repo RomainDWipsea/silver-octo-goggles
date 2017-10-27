@@ -1,0 +1,53 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec504668743/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec504668743.dir/build.make CMakeFiles/cmTryCompileExec504668743.dir/build
+make[1]: entrant dans le répertoire « /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp »
+/usr/bin/cmake -E cmake_progress_report /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec504668743.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTryCompileExec504668743.dir/CheckSymbolExists.c.o   -c /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTryCompileExec504668743
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec504668743.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTryCompileExec504668743.dir/CheckSymbolExists.c.o  -o cmTryCompileExec504668743 -rdynamic 
+CMakeFiles/cmTryCompileExec504668743.dir/CheckSymbolExists.c.o: dans la fonction « main »:
+CheckSymbolExists.c:(.text+0x16): référence indéfinie vers « pthread_create »
+collect2: error: ld returned 1 exit status
+make[1]: *** [cmTryCompileExec504668743] Erreur 1
+make[1]: quittant le répertoire « /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp »
+make: *** [cmTryCompileExec504668743/fast] Erreur 2
+
+File /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec2136647518/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2136647518.dir/build.make CMakeFiles/cmTryCompileExec2136647518.dir/build
+make[1]: entrant dans le répertoire « /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp »
+/usr/bin/cmake -E cmake_progress_report /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2136647518.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec2136647518.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec2136647518
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2136647518.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec2136647518.dir/CheckFunctionExists.c.o  -o cmTryCompileExec2136647518 -rdynamic -lpthreads 
+/usr/bin/ld: ne peut trouver -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [cmTryCompileExec2136647518] Erreur 1
+make[1]: quittant le répertoire « /home/romain/code/gtest-1.6.0/build/CMakeFiles/CMakeTmp »
+make: *** [cmTryCompileExec2136647518/fast] Erreur 2
+
+

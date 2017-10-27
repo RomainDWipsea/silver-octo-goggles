@@ -1,0 +1,506 @@
+/*
+The file Mission.hpp is part of the Harmony software.
+
+Harmony is a software that provides tools for the detection of wildlife in series of images.
+
+Copyright 2014-2016 WIPSEA SARL, contact@wipsea.com
+
+Author(s) : Romain Dambreville
+
+Creation date : 2015/03/26
+
+Tous droits réservés - All rights reserved
+n
+Library used :
+- OpenCV 3.0.0 : BSD 3-Clause license => http://opensource.org/licenses/BSD-3-Clause
+- Caffe : BSD 2-Clause license => https://opensource.org/licenses/bsd-2-clause
+*/
+
+#ifndef MISSION_HPP
+#define MISSION_HPP
+
+#include <vector>
+#include <string>
+#include <memory>
+#include <map>
+#include "Observation.hpp"
+//#include "algo/algo.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "easylogging++.h"
+class Classifier;
+
+/*! \class Mission
+ * \brief Mission management class
+ *
+ * This class provide functions to manage overall parameters of a mission. A mission is a collection of observation that are usually images. 
+ *
+ */
+const int PATCH_SIZE = 100;
+class Mission {
+ public :
+  struct species {
+    std::string name;  // species name
+    std::string color;  // color to print
+    bool hide;  // chose to hide or show this species.
+    bool automatic;
+    float threshold;  // Threshold to validate detection
+    species() : color("#000000"), hide(false), automatic(false) {
+    }
+  };
+
+  /*!
+   * \brief Constructor
+   *
+   * Class constructor for Mission
+   *
+   * \param 
+   *
+   * \return 
+   */
+  Mission();
+
+  /*!
+   * \brief Destructor
+   *
+   * Class destructor for Mission
+   *
+   * \param 
+   *
+   * \return 
+   */
+  ~Mission();
+
+  /*!
+   * \brief Constructor
+   *
+   * Class copy constructor for Mission
+   *
+   * \param missionToCopy : Mission to copy
+   *
+   * \return 
+   */
+  Mission(Mission const& _missionToCopy);
+
+  /*!
+   * \brief Copy operator
+   *
+   * Overide of the copy operator
+   *
+   * \param -missionToCopy : mission to copy
+   *
+   * \return Mission : new copied mission
+   */
+  Mission& operator=(Mission const& _missionToCopy);
+
+  /*!
+   * \brief Constructor
+   *
+   * Constructor using mission's name
+   *
+   * \param - name : mission's name (m_name)
+   *
+   * \return 
+   */
+  explicit Mission(std::string _name);
+
+    enum Method {
+    FILTER,
+    TREE,
+    SUPER_PIXELS
+  };
+
+  /*!
+   * \brief add observation
+   *
+   * Adds an observation to the mission by its filePath
+   *
+   * \param -filePath : absolute file path of the observation
+   *
+   * \return bool : true if successfull
+   */
+  bool addObservation(std::string const& _filePath);
+
+  /*!
+   * \brief load folder
+   *
+   * Build add all images in a folder to the mission
+   *
+   * \param -folderPath : file to the input folder
+   *
+   * \return bool : true if successfull
+   */
+  bool addFolder(std::string const& _folderPath);
+
+  /*!
+   * \brief Add a subfolder
+   *
+   * To deal with subfolders in a project, we consider it as a dependant project
+   * It will be added to the attribute m_subfolders
+   *
+   * \param p
+   *
+   * \return 
+   */
+  void addSubFolder(std::string _folderPath);
+
+  /*!
+   * \brief remove subfolder
+   *
+   * remove a subfolder from the project by providing its path
+   *
+   * \param _folderPath : path to the folder to be removed from the project
+   *
+   * \return 
+   */
+  bool removeSubFolder(std::string _folderPath);
+
+  /*!
+   * \brief Add Species
+   *
+   * Add a species to all the Mission's observation
+   *
+   * \param -_speciesName : Species name
+   *        -_color : hexadecimal code of the color to be used for print
+   *        -_hide : print status
+   *        -_thesh : print condition
+   *
+   * \return bool : true if successfull
+   */
+  bool addSpecies(std::string const& _speciesName,
+                  std::string _color = "#000000",
+                  bool _hide = false,
+                  bool _auto = false,
+                  float _thresh = 0.5);
+
+  /*!
+   * \brief Remove species
+   *
+   * Remove a species from all observations
+   *
+   * \param - SpeciesName : Species name as a string
+   *
+   * \return bool : true if successfull
+   */
+  bool removeSpecies(std::string const& _speciesName);
+
+  /*!
+   * \brief write Json
+   *
+   * Write the mission as a json objet 
+   *
+   * \param -jsonObject : Object to write in
+   *
+   * \return bool : true if successfull
+   */
+  bool writeJsonItem(Json::Value *_jsonObject) const;
+
+  /*!
+   * \brief read Json
+   *
+   * read a json object as a mission, this is the main function,
+   * it will read the version in the file and direct to the correct reader
+   *
+   * \param _jsonObject : object to read
+   *
+   * \return true if successfull
+   */
+  bool readJsonItem(Json::Value const& _jsonObject);
+
+
+  /*!
+   * \brief read Json
+   *
+   * read a json object as a mission (to be used for version < 1.0.0)
+   *
+   * \param _jsonObject : object to read
+   *
+   * \return true if successfull
+   */
+  bool readJsonItemOld(Json::Value const& _jsonObject);
+
+    /*!
+   * \brief read Json
+   *
+   * read a json object as a mission (to be used for version >= 1.0.0)
+   *
+   * \param _jsonObject : object to read
+   *
+   * \return true if successfull
+   */
+  bool readJsonItemv100(Json::Value const& _jsonObject);
+
+  /*!
+   * \brief read Json
+   *
+   * read a json object as a mission (to be used for version >=1.1.0)
+   *
+   * \param _jsonObject : object to read
+   *
+   * \return true if successfull
+   */
+  bool readJsonItemv110(Json::Value const& _jsonObject);
+
+  /*!
+   * \brief get species count
+   *
+   * get the number of item for a given species in the mission
+   *
+   * \param 
+   *
+   * \return 
+   */
+  int getSpeciesCount(std::string _species) const;
+
+  /*!
+   * \brief test existance
+   *
+   * Test if an image is contained in the mission
+   *
+   * \param _fullPath = absolute path to the image
+   *
+   * \return bool = true if the the folder does contain the image
+   */
+  void isImgIn(std::string _fullPath, int &res, bool &found);
+
+  /*!
+   * \brief get access
+   *
+   * acces mission name
+   *
+   * \param 
+   *
+   * \return string : mission's name
+   */
+  std::string getName() const;
+
+  /*!
+   * \brief get a subFolder
+   *
+   * get access to one of the subFolder
+   *
+   * \param _iter : index of the subfolder in the Mission
+   *
+   * \return weak pointer to the concerned subfolder
+   */
+  std::weak_ptr<Mission> getSubFolder(int _iter);
+
+  /*!
+   * \brief get subfolders count
+   *
+   * return the number of direct subfolder in a mission (not recursive)
+   *
+   * \return int result
+   */
+  int getSubFoldersCount();
+
+  /*!
+   * \brief get access
+   *
+   * get number of observation in the current mission
+   *
+   * \param 
+   *
+   * \return int : number of observation
+   */
+  int getObsNumber();
+
+  /*!
+   * \brief get an observation
+   *
+   * get a particular observation from obslist
+   *
+   * \param iter : number of the observation in m_obsList
+   *
+   * \return Observation: required observation
+   */
+  std::weak_ptr<Observation> getObs(int _iter) const;
+
+  /*!
+   * \brief get number of item
+   *
+   * 
+   *
+   * \param 
+   *
+   * \return 
+   */
+  int getItemCount() const;
+
+  /*!
+   * \brief get species name
+   *
+   * get the name of all species visible in the mission
+   *
+   * \param 
+   *
+   * \return vectoc<string> vector of species names
+   */
+  std::vector<std::string> getSpeciesNames();
+
+  /*!
+   * \brief get species name
+   *
+   * get the name of all species visible in the mission
+   *
+   * \param 
+   *
+   * \return vectoc<string> vector of species names
+   */
+  std::map<std::string, species> getSpecies();
+
+  /*!
+   * \brief get a particular species
+   *
+   * return all the parameters for a given species
+   *
+   * \param _speciesName : id of the species we want as writen in the "name" field
+   *
+   * \return Mission::species : struct with all parameters 
+   */
+  Mission::species getSpecies(std::string _speciesName);
+
+  /*!
+   * \brief get
+   *
+   * get folder's path
+   *
+   * \param 
+   *
+   * \return std::string : m_folderPath
+   */
+  std::string getFolderPath();
+
+  std::weak_ptr<Mission> getSubFolder(std::string _path,
+                                      bool &found);
+
+  int getSubFolderCount();
+
+  /*!
+   * \brief set 
+   *
+   * set mission's name
+   *
+   * \param name : mission's name
+   *
+   * \return bool : true if change successfully done
+   */
+  bool setName(std::string _name);
+  
+   /*!
+   * \brief set 
+   *
+   * set mission's user (expert)
+   *
+   * \param name : mission's name
+   *
+   * \return bool : true if change successfully done
+   */
+  bool setUser(std::string _userName);
+  std::string getUserName();
+  std::vector<std::string> getObsPath();
+
+  /*!
+   * \brief set species color
+   *
+   * modify the species.color field to _color for the given _speciesName
+   *
+   * \param _speciesName : species to be modified
+   * \param _color : the new color for _speciesName
+   */
+  void setSpeciesColor(std::string _speciesName, std::string _color);
+  void setFolderPath(std::string _path);
+  void setThreshold(std::string _species, float _threshold);
+  bool detectTurtlesSingleIm(std::string _imgPath, float _threshold = 0.7);
+  bool getGpu();
+  bool isClassifierInitialized();
+  std::shared_ptr<Observation> getObs(std::string _path);
+  int classifyPatches(std::shared_ptr<Observation> _obs, float _threshold = 0.7);
+  void initClassifier();
+
+  /*!
+   * \brief set species name
+   *
+   * Change species name from _speciesOldName to _speciesNewName
+   *
+   * \param _speciesOldName : name as currently know in this->getSpeciesNames()
+   * \param _speciesNewName : new name to set
+   */
+  void changeSpeciesName(std::string _speciesOldName,
+                               std::string _speciesNewName);
+
+#ifdef USE_ALGO
+  int classifyPatches();
+#endif  // USE_ALGO
+#ifdef USE_ALGO
+  bool detectTurtles(Method _m, std::string _pathToGlobal);
+#endif  // USE ALGO
+
+  /*
+   * \brief read results from file
+   *
+   * Read a text file in the form
+   * path score xmin xmax ymin ymax
+   * and visualize the results as a mission in Harmony
+   *
+   * \param _resultFile : txt file containing object information
+   *
+   * \return void
+   */
+  void readFRCNNResults(std:: string _resultFile);
+
+  bool exportForKeras(std::string _folderPath);
+
+  void extractPatches(std::string _path,
+                      Observation::ExtractionMode _mode);
+  /*!
+   * \brief get results 
+   *
+   * Compare the current mission to the results from the groundTruth by using the probability score. Only items identified with the same species name and a score > _thresh will be counted as positive detections.
+   *
+   * \param _gtMission : ground truth mission
+   * \param _thresh : minimum probability score to accept an item for a given class
+   *
+   * \return recall and accuracy in a vector
+   */
+  std::vector<std::vector<double>> compareItems(Mission _gtMission,
+                                                double _threshold = 0.5);
+  int findTruePos(Mission _gtMission);
+  int findTruePos(Mission _gtMission, std::shared_ptr<Mission> _truePos);
+  int findFalsePos(Mission _gtMission, std::shared_ptr<Mission> _falsePos);
+  int findMissDet(Mission _gtMission, std::shared_ptr<Mission> _missDet);
+  int labelDetections(Mission const& _gTMission);
+#ifdef USE_RESEARCH
+    void loadResultsItem(std::string _resultFile);
+#endif  // USE_RESEARCH
+
+ private:
+  //! Prepare internal species
+  void init();
+
+  //! Mission name
+  std::string m_name;
+
+  //! Observation list
+  std::vector<std::shared_ptr<Observation>> m_obsList;
+
+  //! New species List
+  std::map<std::string, species> m_speciesList;
+
+  //! main folder path
+  std::string m_folderPath;
+
+  //! subfolders list
+  std::vector<std::shared_ptr<Mission>> m_subFolders;
+
+  //! classifier
+  Classifier *m_classifier = 0;
+
+  //! Name of the user
+  std::string m_user = "unknown";
+};
+
+int test();
+
+#endif /* MISSION_HPP */

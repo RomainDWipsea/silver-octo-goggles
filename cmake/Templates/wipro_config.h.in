@@ -1,0 +1,12 @@
+// the configured options and settings for Harmony
+#define Harmony_VERSION_MAJOR @Harmony_VERSION_MAJOR@
+#define Harmony_VERSION_MINOR @Harmony_VERSION_MINOR@
+#define Harmony_VERSION_PATCH @Harmony_VERSION_PATCH@
+
+/* Sources directory */
+#define SOURCE_FOLDER "${PROJECT_SOURCE_DIR}"
+
+/* Binaries directory */
+#define BINARY_FOLDER "${PROJECT_BINARY_DIR}"
+
+
