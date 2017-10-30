@@ -11,16 +11,8 @@ find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5Declarative)
 
 # ---[ Exiv2
-if(WIN32)
-  add_library(Exiv2 STATIC IMPORTED)
-  if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    set_property(TARGET Exiv2 PROPERTY IMPORTED_LOCATION C:/gnu/exiv2-0.25/msvc2005/bin/x64/ReleaseDLL/libexiv2.lib)
-  else()
-    set_property(TARGET Exiv2 PROPERTY IMPORTED_LOCATION C:/gnu/exiv2-0.25/msvc2005/bin/x64/DebugDLL/libexiv2.lib)
-  endif()
-elseif(UNIX)
-  find_package(Exiv2)
-endif()
+find_package(Exiv2)
+
 if(EXIV2_FOUND)
   list(APPEND Wipro_INCLUDE_DIRS PUBLIC ${EXIV2_INCLUDE_DIR})
   list(APPEND Wipro_LINKER_LIBS PUBLIC ${EXIV2_LIBRARIES})
@@ -49,4 +41,3 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
   list(APPEND Wipro_DEFINITIONS PUBLIC -DELPP_DISABLE_TRACE_LOGS -DELPP_DISABLE_DEBUG_LOGS -DELPP_DISABLE_PERFORMANCE_TRACKING)
 endif()
 include_directories(SYSTEM PUBLIC ${PROJECT_SOURCE_DIR}/include/ext)
-

@@ -23,7 +23,6 @@
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
 # Support EXIV2_MIN_VERSION for compatibility:
-message("I'm trying to find exiv2")
 if(NOT Exiv2_FIND_VERSION)
   set(Exiv2_FIND_VERSION "${EXIV2_MIN_VERSION}")
 endif(NOT Exiv2_FIND_VERSION)

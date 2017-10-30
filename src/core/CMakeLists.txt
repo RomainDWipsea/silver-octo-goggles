@@ -6,6 +6,7 @@ set_property(SOURCE  ext/jsoncpp.cpp ext/easylogging++.cc APPEND_STRING PROPERTY
 list(APPEND srcs ${srcs_ext})
 
 add_library(core ${srcs})
+
 # ---[ link libraries
 target_link_libraries(core ${Wipro_LINKER_LIBS})
 
@@ -14,7 +15,7 @@ set(Core_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/core)
 target_include_directories(core ${Wipro_INCLUDE_DIRS}
                                  PUBLIC
                                  $<BUILD_INTERFACE:${Core_INCLUDE_DIR}>
-                                 $<INSTALL_INTERFACE:include>)
+                                 $<INSTALL_INTERFACE:include/core>)
 
 # ---[ definitions and properties
 target_compile_definitions(core PUBLIC ${Wipro_DEFINITIONS})
@@ -25,3 +26,12 @@ enable_testing()
 include(gmock)
 #add_test(coreTest MissionTest)
 #add_subdirectory(unitTest)
+
+# ---[ Install
+install(TARGETS core DESTINATION lib)
+install(DIRECTORY ${Core_INCLUDE_DIR}  DESTINATION include/core)
+# get_prerequisites(${PROJECT_BINARY_DIR}/src/core/libcore.a CORE_DEPENDENCIES 0 0 ${PROJECT_BINARY_DIR}/src/gui/Harmony "")
+# install(FILES ${CORE_DEPENDENCIES} DESTINATION lib)
+# target_compile_definitions(CORE_DEPENDENCIES INTERFACE
+#   $<INSTALL_INTERFACE:lib>
+# )
