@@ -15,7 +15,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 include(cmake/Misc.cmake)
 include(cmake/Summary.cmake)
 #find_package(GetPrerequisites)
-include(cmake/GetPrerequisites.cmake)
+#include(cmake/GetPrerequisites.cmake)
 
 # ---[ Dependencies
 include(cmake/Dependencies.cmake)

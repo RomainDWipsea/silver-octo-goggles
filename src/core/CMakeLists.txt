@@ -28,10 +28,5 @@ include(gmock)
 #add_subdirectory(unitTest)
 
 # ---[ Install
-install(TARGETS core DESTINATION lib)
-install(DIRECTORY ${Core_INCLUDE_DIR}  DESTINATION include/core)
-# get_prerequisites(${PROJECT_BINARY_DIR}/src/core/libcore.a CORE_DEPENDENCIES 0 0 ${PROJECT_BINARY_DIR}/src/gui/Harmony "")
-# install(FILES ${CORE_DEPENDENCIES} DESTINATION lib)
-# target_compile_definitions(CORE_DEPENDENCIES INTERFACE
-#   $<INSTALL_INTERFACE:lib>
-# )
+# install(TARGETS core DESTINATION lib)
+# install(DIRECTORY ${Core_INCLUDE_DIR}  DESTINATION include/core)

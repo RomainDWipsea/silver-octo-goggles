@@ -23,14 +23,14 @@ find_package(Qt5Declarative)
 find_package(Exiv2 MODULE REQUIRED)
 if(EXIV2_FOUND)
   list(APPEND Wipro_INCLUDE_DIRS PUBLIC ${EXIV2_INCLUDE_DIR})
-  list(APPEND Wipro_LINKER_LIBS PUBLIC ${EXIV2_LIBRARIES})
+  list(APPEND Wipro_LINKER_LIBS ${EXIV2_LIBRARIES})
   list(APPEND Wipro_DEFINITIONS PUBLIC ${EXIV2_DEFINITIONS})
 endif()
 
 # ---[ Boost
 find_package(Boost 1.56 REQUIRED COMPONENTS random system thread filesystem chrono atomic date_time regex)
 list(APPEND Wipro_INCLUDE_DIRS PUBLIC ${Boost_INCLUDE_DIRS})
-list(APPEND Wipro_LINKER_LIBS PUBLIC ${Boost_LIBRARIES})
+list(APPEND Wipro_LINKER_LIBS ${Boost_LIBRARIES})
 
 # ---[ OpenCV
 find_package(OpenCV QUIET COMPONENTS core highgui imgproc imgcodecs)
@@ -39,7 +39,7 @@ if(NOT OpenCV_FOUND) # if not OpenCV 3.x, then imgcodecs are not found
 endif()
 message("opencv include dir is :  ${OpenCV_INCLUDE_DIRS}")
 list(APPEND Wipro_INCLUDE_DIRS PUBLIC ${OpenCV_INCLUDE_DIRS})
-list(APPEND Wipro_LINKER_LIBS PUBLIC ${OpenCV_LIBS})
+list(APPEND Wipro_LINKER_LIBS ${OpenCV_LIBS})
 
 # ---[ easyLogging++ and json
 list(APPEND Wipro_DEFINITIONS PUBLI -DELPP_FEATURE_PERFORMANCE_TRACKING -DELPP_NO_DEFAULT_LOG_FILE -DELPP_FEATURE_CRASH_LOG)

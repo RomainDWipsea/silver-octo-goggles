@@ -52,6 +52,8 @@ else()
   set(myPath "./lib/exiv2/build/installed/include")
   set(myPathLib "./lib/exiv2/build/installed/lib")
 endif()
+# set(EXIV2_INCLUDE_DIR "./lib/exiv2/build/installed/include")
+# set(EXIV2_LIBRARY "./lib/exiv2/build/installed/lib/libexi2.so")
 find_path(EXIV2_INCLUDE_DIR NAMES exiv2/exif.hpp
           HINTS
 	  ${myPath}
